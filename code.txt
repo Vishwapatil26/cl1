@@ -428,3 +428,78 @@ plt.show()
 
 
 # In[ ]:
+
+
+Maze ML -6
+import numpy as np
+import random
+
+# Maze environment settings
+maze = [
+    [0, 0, 0, -1, 0],
+    [0, -1, 0, -1, 0],
+    [0, -1, 0, 0, 0],
+    [0, 0, -1, -1, 0],
+    [0, 0, 0, -1, 10],  # Goal at (4, 4)
+]
+start_pos = (0, 0)
+goal_pos = (4, 4)
+actions = ["up", "down", "left", "right"]
+
+# Q-learning parameters
+alpha = 0.1
+gamma = 0.9
+epsilon = 0.2
+episodes = 1000
+max_steps = 100
+
+# Initialize Q-table with zeros
+q_table = np.zeros((len(maze), len(maze[0]), len(actions)))
+
+# Helper functions
+def get_next_state(state, action):
+    i, j = state
+    if action == "up" and i > 0:
+        return (i - 1, j)
+    elif action == "down" and i < len(maze) - 1:
+        return (i + 1, j)
+    elif action == "left" and j > 0:
+        return (i, j - 1)
+    elif action == "right" and j < len(maze[0]) - 1:
+        return (i, j + 1)
+    return state  # Stay in place if move is invalid
+
+def get_reward(state):
+    return maze[state[0]][state[1]]
+
+# Training loop
+for episode in range(episodes):
+    state = start_pos
+    for step in range(max_steps):
+        # Choose action using epsilon-greedy policy
+        if random.uniform(0, 1) < epsilon:
+            action = random.choice(range(len(actions)))
+        else:
+            action = np.argmax(q_table[state[0], state[1]])
+        
+        next_state = get_next_state(state, actions[action])
+        reward = get_reward(next_state)
+
+        # Q-learning formula
+        best_next_action = np.argmax(q_table[next_state[0], next_state[1]])
+        q_table[state[0], state[1], action] += alpha * (reward + gamma * q_table[next_state[0], next_state[1], best_next_action] - q_table[state[0], state[1], action])
+
+        state = next_state
+        
+        # Check if the goal is reached
+        if state == goal_pos:
+            break
+
+# Testing the trained agent
+state = start_pos
+path = [state]
+while state != goal_pos:
+    action = np.argmax(q_table[state[0], state[1]])
+    state = get_next_state(state, actions[action])
+    path.append(state)
+print("Path to goal:", path)
