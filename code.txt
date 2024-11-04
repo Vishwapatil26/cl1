@@ -1,10 +1,4 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 # # 1 dmv
-
-# In[ ]:
-
 
 import warnings 
 warnings.filterwarnings('ignore')
@@ -40,23 +34,15 @@ plt.xlabel('Rating')
 plt.ylabel('Count')
 plt.show()
 
+------------------------------------------------------------------------------------------------------
 
 # # 2 dmv
-
-# In[ ]:
-
 
 df= pd.read_csv('weather.csv')
 df
 
 
-# In[ ]:
-
-
 df.isnull().sum()
-
-
-# In[ ]:
 
 
 # Group by date and calculate average temperature
@@ -75,9 +61,6 @@ plt.grid()
 plt.show()
 
 
-# In[ ]:
-
-
 # Group by date and calculate total precipitation
 total_precipitation = df.groupby('Date.Full')['Data.Precipitation'].sum().reset_index()
 
@@ -90,9 +73,6 @@ plt.ylabel('Precipitation (inches)')
 plt.xticks(rotation=45)
 plt.grid(axis='y')
 plt.show()
-
-
-# In[ ]:
 
 
 # Group by city and calculate average wind speed
@@ -108,24 +88,14 @@ plt.xticks(rotation=45)
 plt.grid(axis='y')
 plt.show()
 
-
+------------------------------------------------------------------------------------------------------
 # # 3 dmv
-
-# In[ ]:
-
 
 import pandas as pd
 
 
-# In[ ]:
-
-
 df=pd.read_csv('telecom_churn.csv')
 df
-
-
-# In[ ]:
-
 
 # Convert 'date_of_registration' to datetime
 df['date_of_registration'] = pd.to_datetime(df['date_of_registration'], errors='coerce')
@@ -136,14 +106,7 @@ df['data_used'] = df['data_used'].apply(lambda x: abs(x) if x < 0 else x)
 # Check for any remaining missing values
 print(df.isnull().sum())
 
-
-# In[ ]:
-
-
 df
-
-
-# In[ ]:
 
 
 # Calculate tenure (years as a customer)
@@ -156,14 +119,7 @@ df['income_bracket'] = pd.cut(df['estimated_salary'], bins=[0, 50000, 100000, 15
 df = pd.get_dummies(df, columns=['telecom_partner', 'gender', 'state', 'city', 'income_bracket'], drop_first=True)
 
 
-# In[ ]:
-
-
 df
-
-
-# In[ ]:
-
 
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -186,17 +142,13 @@ sns.countplot(x='telecom_partner_Reliance Jio', hue='churn', data=df)
 plt.title('Churn by Telecom Partner')
 plt.show()
 
+------------------------------------------------------------------------------------------------------
 
 # # dmv 4
-
-# In[ ]:
 
 
 df=pd.read_csv('Real-Estate dataset.csv')
 df
-
-
-# In[ ]:
 
 
 # Check for missing values
@@ -211,9 +163,6 @@ for col in binary_columns:
 df = pd.get_dummies(df, columns=['furnishingstatus'], drop_first=True)
 
 
-# In[ ]:
-
-
 # Add 'price_per_sqft' feature
 df['price_per_sqft'] = df['price'] / df['area']
 
@@ -224,13 +173,7 @@ df['total_rooms'] = df['bedrooms'] + df['bathrooms']
 df['luxury_index'] = df[['mainroad', 'guestroom', 'basement', 'hotwaterheating', 'airconditioning', 'parking', 'prefarea']].sum(axis=1)
 
 
-# In[ ]:
-
-
 df
-
-
-# In[ ]:
 
 
 import seaborn as sns
@@ -256,9 +199,6 @@ plt.title("Furnishing Status vs Price")
 plt.show()
 
 
-# In[ ]:
-
-
 from sklearn.preprocessing import StandardScaler
 
 # List of numerical columns to scale
@@ -269,22 +209,15 @@ scaler = StandardScaler()
 df[num_cols] = scaler.fit_transform(df[num_cols])
 
 
-# In[ ]:
-
-
 df
 
+------------------------------------------------------------------------------------------------------
 
 # # 5 dmv
-
-# In[ ]:
 
 
 df=pd.read_csv('AQI Data Set.csv')
 df
-
-
-# In[ ]:
 
 
 # Check for missing values
@@ -298,9 +231,6 @@ print(df.isnull().sum())
 df=df.dropna()
 
 
-# In[ ]:
-
-
 # Convert 'Months' to datetime
 df['Mounths'] = pd.to_datetime(df['Mounths'], format='%b-%y')
 
@@ -308,9 +238,6 @@ df['Mounths'] = pd.to_datetime(df['Mounths'], format='%b-%y')
 df.sort_values('Mounths', inplace=True)
 
 print(df)
-
-
-# In[ ]:
 
 
 import matplotlib.pyplot as plt
@@ -342,17 +269,12 @@ plt.xticks(rotation=45)
 plt.tight_layout()
 plt.show()
 
+------------------------------------------------------------------------------------------------------
 
 # # 6 dmv
 
-# In[ ]:
-
-
 df=pd.read_csv('retail_sales_data.csv')
 df
-
-
-# In[ ]:
 
 
 # Calculate total sales
@@ -367,9 +289,6 @@ sales_by_region = sales_by_region.sort_values(by='total_sales', ascending=False)
 print(sales_by_region)
 
 
-# In[ ]:
-
-
 import matplotlib.pyplot as plt
 
 plt.figure(figsize=(10, 6))
@@ -379,9 +298,6 @@ plt.xlabel('Shopping Mall')
 plt.ylabel('Total Sales')
 plt.xticks(rotation=45)
 plt.show()
-
-
-# In[ ]:
 
 
 # Calculate total sales by category
@@ -397,9 +313,6 @@ plt.xticks(rotation=45)
 plt.show()
 
 
-# In[ ]:
-
-
 # Calculate total sales by payment method
 sales_by_payment_method = df.groupby('payment_method')['total_sales'].sum().reset_index()
 
@@ -409,9 +322,6 @@ plt.pie(sales_by_payment_method['total_sales'], labels=sales_by_payment_method['
 plt.title('Sales Distribution by Payment Method')
 plt.axis('equal')  # Equal aspect ratio
 plt.show()
-
-
-# In[ ]:
 
 
 # Calculate total sales by gender and category
@@ -426,9 +336,7 @@ plt.xticks(rotation=0)
 plt.legend(title='Product Category')
 plt.show()
 
-
-# In[ ]:
-
+------------------------------------------------------------------------------------------------------
 
 Maze ML -6
 import numpy as np
